@@ -66,15 +66,24 @@
       
       <li>
         <div><%= a_delivery.description %></div>
-        <div>"Supposed to arrive on "<%= a_delivery.arrival_date %></div>
+        <% if Date.today - a_delivery.arrival_date > 3 %>
+              <div style="color: red">
+              Supposed to arrive on <%= a_delivery.arrival_date %>
+              </div>
+        <% else %>
+              <div>
+              Supposed to arrive on <%= a_delivery.arrival_date %>
+              </div>
+        <% end %>
+
         <div><%= a_delivery.details %></div>
 
         <small>
-        
           <a href="/delete_delivery/<%= a_delivery.id %>">Delete</a>
         </small>
+        
         <form action="/update_delivery" method="post">
-        <input type="hidden" name="query_supposed_to_arrive_on" value="Mark as received">
+        <input type="hidden" name="query_status" value="Received">
         <input type="hidden" name="path_id" value="<%= a_delivery.id %>">
         <button>
         Mark as received
@@ -89,14 +98,11 @@
 </div>
 
 
-  
-
- 
-
-
-<div class="received" style="color:lightgreen">
+<div class="received" style="background-color:lightgreen">
 
   <h2>Received</h2>
+
+  
 
   <ul>
      <% next_delivery = Delivery.where({:status => "Received"}) %>
@@ -107,7 +113,7 @@
       <div><%= a_delivery.description %></div>
 
         <small>
-          <%= "Started " + time_ago_in_words(a_delivery.updated_at) + " ago"%>
+          <%= "Updated " + time_ago_in_words(a_delivery.updated_at) + " ago"%>
 
           <a href="/delete_delivery/<%= a_delivery.id %>">Delete</a>
         </small>
