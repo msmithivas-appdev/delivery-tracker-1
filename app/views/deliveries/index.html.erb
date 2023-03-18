@@ -56,7 +56,7 @@
 
 <hr>
 
-<div class="waiting_on" style="color:lightgoldenrodyellow">
+<div class="waiting_on" style="background-color:lightgoldenrodyellow">
 
   <h2>Waiting on</h2>
 
@@ -66,12 +66,21 @@
       
       <li>
         <div><%= a_delivery.description %></div>
+        <div>"Supposed to arrive on "<%= a_delivery.arrival_date %></div>
+        <div><%= a_delivery.details %></div>
 
         <small>
-          <%= "Added " + time_ago_in_words(a_delivery.created_at) + " ago" %>
-
+        
           <a href="/delete_delivery/<%= a_delivery.id %>">Delete</a>
         </small>
+        <form action="/update_delivery" method="post">
+        <input type="hidden" name="query_supposed_to_arrive_on" value="Mark as received">
+        <input type="hidden" name="path_id" value="<%= a_delivery.id %>">
+        <button>
+        Mark as received
+      </button>
+        </form>
+
       </li>
       <% end %>
   </ul>
