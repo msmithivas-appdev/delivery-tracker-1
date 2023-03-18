@@ -20,12 +20,12 @@ class DeliveriesController < ApplicationController
   def create
     the_delivery = Delivery.new
     the_delivery.description = params.fetch("query_description")
-    the_delivery.arrival_date = params.fetch("query_arrival_date")
-    the_delivery.carrier = params.fetch("query_carrier")
-    the_delivery.tracking_number = params.fetch("query_tracking_number")
-    the_delivery.user_id = params.fetch("query_user_id")
-    the_delivery.status = params.fetch("query_status")
+    the_delivery.arrival_date = params.fetch("query_supposed_to_arrive_on")
     the_delivery.details = params.fetch("query_details")
+    the_delivery.user_id = session.fetch(:user_id)
+    the_delivery.status = "Waiting on"
+    # the_delivery.carrier = params.fetch("query_carrier")
+    # the_delivery.tracking_number = params.fetch("query_tracking_number")
 
     if the_delivery.valid?
       the_delivery.save
@@ -35,25 +35,25 @@ class DeliveriesController < ApplicationController
     end
   end
 
-  def update
-    the_id = params.fetch("path_id")
-    the_delivery = Delivery.where({ :id => the_id }).at(0)
+  # def update
+  #   the_id = params.fetch("path_id")
+  #   the_delivery = Delivery.where({ :id => the_id }).at(0)
 
-    the_delivery.description = params.fetch("query_description")
-    the_delivery.arrival_date = params.fetch("query_arrival_date")
-    the_delivery.carrier = params.fetch("query_carrier")
-    the_delivery.tracking_number = params.fetch("query_tracking_number")
-    the_delivery.user_id = params.fetch("query_user_id")
-    the_delivery.status = params.fetch("query_status")
-    the_delivery.details = params.fetch("query_details")
+  #   the_delivery.description = params.fetch("query_description")
+  #   the_delivery.arrival_date = params.fetch("query_arrival_date")
+  #   the_delivery.carrier = params.fetch("query_carrier")
+  #   the_delivery.tracking_number = params.fetch("query_tracking_number")
+  #   the_delivery.user_id = params.fetch("query_user_id")
+  #   the_delivery.status = params.fetch("query_status")
+  #   the_delivery.details = params.fetch("query_details")
 
-    if the_delivery.valid?
-      the_delivery.save
-      redirect_to("/deliveries/#{the_delivery.id}", { :notice => "Delivery updated successfully."} )
-    else
-      redirect_to("/deliveries/#{the_delivery.id}", { :alert => the_delivery.errors.full_messages.to_sentence })
-    end
-  end
+  #   if the_delivery.valid?
+  #     the_delivery.save
+  #     redirect_to("/deliveries/#{the_delivery.id}", { :notice => "Delivery updated successfully."} )
+  #   else
+  #     redirect_to("/deliveries/#{the_delivery.id}", { :alert => the_delivery.errors.full_messages.to_sentence })
+  #   end
+  # end
 
   def destroy
     the_id = params.fetch("path_id")
